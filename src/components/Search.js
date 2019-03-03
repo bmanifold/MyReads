@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SearchBar from './SearchBar';
 import SearchResults from './SearchResults';
-import * as BooksAPI from '../BooksAPI'
+import * as BooksAPI from '../BooksAPI';
 
 class Search extends Component {
   state = {
@@ -17,7 +17,7 @@ class Search extends Component {
   }
 
   updateSearchResults = (query) => {
-    if (query === '') {
+    if (query.trim() === '') {
       this.setState({results: [], query: ''})
       return
     }
@@ -31,16 +31,12 @@ class Search extends Component {
       })
   }
 
-  // Remove search results that do not have image links
   filterResults = (results) => {
-    const x = this.bookIdState()
-    return ( results
-      .filter((result) => result.imageLinks)
-      .map((result) => {
-        result.shelf = x[result.id] || 'none'
-        return result
-      })
-    )
+    const idState = this.bookIdState()
+    return ( results.map((result) => {
+      result.shelf = idState[result.id] || 'none'
+      return result
+    }))
   }
 
   setResultShelf = (book, shelf) => {
